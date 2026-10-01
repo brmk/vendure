@@ -75,6 +75,13 @@ describe('JobQueue Admin API with InMemoryJobQueueStrategy', () => {
         expect(jobsById.map(j => j.id)).toEqual([runningJobId]);
     });
 
+    it('jobs filtered by id returns the job', async () => {
+        const { jobs } = await adminClient.query(getRunningJobsDocument, {
+            options: { filter: { id: { eq: runningJobId } } },
+        });
+        expect(jobs.items.map(j => j.id)).toEqual([runningJobId]);
+    });
+
     it('cancelJob cancels the job', async () => {
         const { cancelJob } = await adminClient.query(cancelJobDocument, { id: runningJobId });
         expect(cancelJob.id).toBe(runningJobId);

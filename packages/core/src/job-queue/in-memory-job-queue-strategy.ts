@@ -10,7 +10,7 @@ import {
 import { ID, PaginatedList } from '@vendure/common/lib/shared-types';
 import { notNullOrUndefined } from '@vendure/common/lib/shared-utils';
 
-import { Injector } from '../common';
+import { idsAreEqual, Injector } from '../common';
 import { InspectableJobQueueStrategy } from '../config/job-queue/inspectable-job-queue-strategy';
 import { Logger } from '../config/logger/vendure-logger';
 import { ProcessContext } from '../process-context/process-context';
@@ -254,7 +254,11 @@ export class InMemoryJobQueueStrategy extends PollingJobQueueStrategy implements
                 continue;
             }
             if (operator?.eq !== undefined) {
-                items = items.filter(i => i[key] === operator.eq);
+                const eq = operator.eq;
+                items =
+                    key === 'id'
+                        ? items.filter(i => idsAreEqual(i.id, eq as ID))
+                        : items.filter(i => i[key] === eq);
             }
 
             const contains = (operator as StringOperators)?.contains;
