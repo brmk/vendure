@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { JobState } from '@vendure/common/lib/generated-types';
 import { mergeConfig } from '@vendure/core';
 import { createTestEnvironment } from '@vendure/testing';
